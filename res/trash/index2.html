@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+<head>
+<head>
+        <title>w3SchoolGameWIP</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css">
+        <link rel="stylesheet" type="text/css" href="css/sonyAppWIP.css">
+        <script src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/sonyAppWIP.js"></script>
+        <script type="text/javascript">
+            $(document).on('mobileinit', function(){
+                $.mobile.defaultPageTransition = 'slidefade';
+            });
+            $(document).ready(function(){
+                //setMyCanvasAttr();
+                responsiveGameArea();
+            });
+        </script>
+        <script src="js/jquery.mobile-1.4.5.js"></script>
+        <!--<script type="text/javascript" src="getTheApple.js"></script>-->
+</head>
+<!--<body onload="startGame1()">-->
+<body>
+
+<div data-role="page" id="page2_1">
+    <div data-role="header" id="headerBar">
+        <h1 id="headerTitle">Eat The Apple Game</h1>
+        <a href="#home" class="ui-btn ui-icon-home ui-btn-icon-notext" id="pg2HeaderBarLeftBtn">home</a>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <!--<p id="test1">Game Screen</p>-->
+        <div id="bobyDiv">
+            <div id="boby1">
+                <img src="res/eatApp.png" id="bobyImg">
+                <span id="bobySpan1">Carefully navigate Little Boby through the obstacles to collect the apples.</span>
+                <br><span id="bobySpan2">Use the buttons below to set Little Boby's speed.</span>
+                <br><span style="color: red;" id="bobySpan3">GOOD LUCK!!!</span>
+            </div>
+        </div>
+        <div id="screenCont" style="background-color: gray;">
+            <canvas id="myCanvas"></canvas>
+        </div>
+        <hr>
+        <!--<form id="bobySpeedConDiv" style="display: block;">
+            <label style="font-weight: bolder;">Boby's speed control</label>
+            <input type="range" name="slider-1" id="slider-1" min="0" max="10" value="1" data-highlight="true">
+        </form>-->
+        <div  id="sCDivPry">
+            <div id="sCDiv0">Boby's speed set: </div>
+            <div id="sCDiv1" class="ui-btn ui-shadow ui-corner-all ui-icon-carat-l ui-btn-icon-notext ui-btn-inline" onclick="bobySpeedSet(-1)"></div>
+            <div id="sCDiv2">1</div>
+            <div id="sCDiv3" class="ui-btn ui-shadow ui-corner-all ui-icon-carat-r ui-btn-icon-notext ui-btn-inline" onclick="bobySpeedSet(1)"></div>
+        </div>
+        <div id="contlBtns">
+            <button  id="startBtn">Start Game</button>
+            <!--<button  onmousedown="increaseComp()" onmouseup="clearheight()">+Comp</button><button  onmousedown="decreaseComp()" onmouseup="clearheight()">-Comp</button>-->
+            <!--<button  onclick="gamePiecePos()">GamePiecePos</button>
+            <button  onclick="speedCheck1()">SpeedCheck</button>-->
+            <button  id="stopMyGame" onclick="stopMyGame()" style="display: none;">Stop Game</button>
+        </div>
+        <!--<p id="disDemo1" style="background-color: coral; width: 60px;">Display</p>
+        <br>-->
+        <hr>
+        <div id="keyContPry">
+            <div id="keyCont">
+                <div id="key1"></div>
+                <button id="key2" onmousedown="move('up')" onmouseup="clearmove()" ontouchstart="move('up')">UP</button>
+                <div id="key3"></div>
+                <button id="key4" onmousedown="move('left')" onmouseup="clearmove()" ontouchstart="move('left')">LEFT</button>
+                <div id="key5"></div>
+                <button id="key6" onmousedown="move('right')" onmouseup="clearmove()" ontouchstart="move('right')">RIGHT</button>
+                <div id="key7"></div>
+                <button id="key8" onmousedown="move('down')" onmouseup="clearmove()" ontouchstart="move('down')">DOWN</button>
+                <div id="key9"></div>
+            </div>
+        </div>
+
+    </div><!-- /content -->
+    <div data-role="footer" data-position="fixed" id="footerBar">
+        <h4>@AdesungProfessional</h4>
+    </div><!-- /footer -->
+</div><!-- /page -->
+
+<script>
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+function randomListFunction(list){
+    var select = parseInt(Math.floor(Math.random(0) * Math.floor(list.length)));
+    var result = list[select];
+    return (result);
+};
+function randomNumbers(min, max, step){
+    var numList = [];
+    var len = (max - min)/step;
+    for(var i = min; i <= max; i += step){
+        numList.push(i);
+    }
+    var selectedIndex = parseInt(Math.floor(Math.random(0) * Math.floor(numList.length)));
+    var result = numList[selectedIndex];
+    return result;
+}
+$(function(){
+    $('#disDemo1').click(function(){
+        var lst = [10, 20, 40, 5, 90];
+        //var a = randomListFunction(lst);
+        var a = randomNumbers(2, 10, 2);
+        $('#disDemo1').text(a);
+    }); 
+});
+   
+
+var myGamePiece;
+var rollBall1, rollBall2, rollBall3, rollBall4, rollBall5;
+var apple, myGameLife, myScore, gameOverDisplay;
+var defaultR1 = 0.1; defaultR2 = 0.2; defaultR3 = 0.05; defaultR4 = 0.15;
+var rollBallS1 = defaultR1; rollBallS2 = defaultR2; rollBallS3 = defaultR3; rollBallS4 = defaultR4;
+var applePosMin = 20; var applePos = applePosMin;
+var applePosMax = 300 - 50;
+var gameAreaHght = 300; var obHght = 20; obWdt = 20;
+var gamePcImage = 'res/getApp.png';
+var gamePcXCord = 5;
+var gameAHgt = 300; gameAWdt = 300;
+var appleXCord = 275; var rollBall1XCord = 60; var rollBall2XCord = 120;
+var rollBall3XCord = 180; var rollBall4XCord = 240;
+var myBackground;
+var myScoreXCord = 230; //Formerly for myScore & myGameLife but now positioned at 10
+var gameIsOne = false; 
+function startGame() {
+    //component(width, height, color, x, y, name, gravSpd)
+    myGamePiece = new component(20, 20, 'res/getApp.png', gamePcXCord, 120, 'gamePc');
+    //apple = new component(15, 15, "lime", 280, 120, 'app');
+    apple = new component(25, 25, "res/apple.png", appleXCord, applePos, 'image', 0.03);
+    myScore = new component("30px", "Consolas", "navy", 10, 20, "text");
+    myGameLife = new component("30px", "30px", "navy", 10, 40, "text");
+    gameOverDisplay = new component("60px", "60px", "red", 150, 150, "text2");
+
+    rollBall1 = new component(obWdt, obHght, "magenta", rollBall1XCord, 0, 'rect', rollBallS1, bounceCntl1); //0.3
+    rollBall2 = new component(obWdt, obHght, "coral", rollBall2XCord, 0, 'rect', rollBallS2, bounceCntl2);  //0.7
+    rollBall3 = new component(obWdt, obHght, "blue", rollBall3XCord, 0, 'rect', rollBallS3, bounceCntl3);   //1
+    rollBall4 = new component(obWdt, obHght, "purple", rollBall4XCord, 0, 'rect', rollBallS4, bounceCntl4);  //0.5
+    myBackground = new component(656, 330, 'res/bground2.jpg', 0, 0, 'background');
+    playBackgroundSound('on');
+}
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    myCanvasDiv: document.getElementById('myCanvasDiv'),
+    start : function() {
+        this.canvas.width = gameAWdt; //We can do without width & height. But we include this in other to be able to access: 'this.canvas.width & this.canvas.height'
+        this.canvas.height = gameAHgt;
+        this.gameLife = 5;
+        this.gamescore = 0;
+        this.gameapples = 0;
+        startGame();
+        this.interval = setInterval(updateGameArea, 20);
+    },
+    clear : function() {
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    stop : function() {clearInterval(this.interval)}
+}
+var speedYCont = 1;
+var speedYDown = true;
+var SpeedYUp = false;
+function component(width, height, color, x, y, name, gravSpd, bounceCntl) {
+    this.name = name;
+    if (name == 'image' || name == 'gamePc' || name == 'background'){
+        this.image = new Image();
+        this.image.src = color;
+    }
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
+    this.speedX = 0;
+    this.speedY = 0;
+    //this.speedYN = -3;
+    //this.gravity = 4;
+    this.gravitySpeed = 0;
+    this.bounce = 1;
+    this.bottomMax = 300;
+    this.topMax = 0;
+    this.gravSpd = gravSpd;
+    this.bounceCntl = bounceCntl;
+    if(this.name == 'image' || this.name == 'gamePc' || this.name == 'rect'){
+        this.gravity = this.gravSpd;
+    }
+    this.update = function() {
+        ctx = canvas.getContext("2d");
+         if (this.name == "text") {
+            ctx.font = '12px bolder Verdana';
+            ctx.fillStyle = color;
+            ctx.fillText(this.text, this.x, this.y);
+        }
+        else if(this.name == "text2") {
+            ctx.font = '20px bolder Verdana';
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            //ctx.fillText(this.text, this.x, this.y);
+            ctx.fillText(this.text, canvas.width/2, canvas.height/2);
+        }
+        else if(this.name == 'cycle'){
+            ctx.beginPath();
+            ctx.arc(this.x,this.y,this.width,this.height,2*Math.PI);
+            ctx.stroke();
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+        else if(name == 'image' || name == 'gamePc' || name == 'background'){
+            ctx.drawImage(this.image,this.x,this.y,this.width, this.height);
+            if(name == 'background'){
+                ctx.drawImage(this.image,
+                    this.x+this.width,
+                    this.y,
+                    this.width, this.height);
+            }
+        }
+        else{
+        ctx.fillStyle = color;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+    }
+    this.newPos = function() {
+        this.maxTop();
+        this.maxBottom();
+        this.maxLeft();
+        this.maxRight();
+        this.hitTop();
+        if(this.name == 'background'){
+            if(this.x == -(this.width)){this.x = 0;}
+        } 
+        if(this.name == 'rect'){
+            this.gravitySpeed += this.gravity;
+            this.x += this.speedX;
+            //this.y += this.speedY + this.gravitySpeed;
+            this.y += this.gravitySpeed;
+            //this.hitTop();
+            this.hitBottom();
+        }else{
+            this.x += this.speedX;
+            this.y += this.speedY;
+        }
+    }
+    this.hitBottom = function(){
+        //this.y += this.speedY;
+        //this.y += this.gravitySpeed;
+            var rockbottom = gameAreaHght - obHght;
+            if(this.y > rockbottom){
+                this.y = rockbottom;
+                this.gravitySpeed = -(this.gravitySpeed + this.bounceCntl);
+        }
+    }
+    this.hitTop = function(){
+        var rocktop = 0;
+        if (this.name == 'rect' && this.y < rocktop){this.y = rocktop;}
+    }
+
+    this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            crash = false;
+        }
+        return crash;
+    }
+    this.hitApple = function(appleObj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = appleObj.x;
+        var otherright = appleObj.x + (appleObj.width);
+        var othertop = appleObj.y;
+        var otherbottom = appleObj.y + (appleObj.height);
+        var eatApp = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            eatApp = false;
+        }
+        return eatApp;
+    }
+    this.maxBottom = function(){
+        var rockbottom = myGameArea.canvas.height - this.height;
+        if (this.name == 'gamePc' && this.y > rockbottom){this.y = rockbottom;
+            myGamePiece.speedX = 0; 
+            myGamePiece.speedY = 0;}
+    }
+    this.maxTop = function(){
+        var rocktop = 0;
+        if (this.name == 'gamePc' && this.y < rocktop){this.y = rocktop;
+            myGamePiece.speedX = 0; 
+            myGamePiece.speedY = 0;}
+    }
+    this.maxLeft = function(){
+        var rockleft = 0;
+        if (this.name == 'gamePc' && this.x < rockleft){this.x = rockleft;
+        myGamePiece.speedX = 0; 
+        myGamePiece.speedY = 0;}
+    }
+    this.maxRight = function(){
+        var rockright = myGameArea.canvas.width - this.width;
+        if (this.name == 'gamePc' && this.x > rockright){this.x = rockright;
+            myGamePiece.speedX = 0; 
+            myGamePiece.speedY = 0;}
+    }
+}
+var currentLevelHold;
+var gameLifeHold;
+var appCollected;
+function gamePieceCrash(event){
+    //myGameArea.stop();
+    myGamePiece.x = 10;
+    myGamePiece.y = 120;
+    if(event == 'hitObst'){
+        playHitObSound();
+        myGameArea.gameLife -= 1;
+        gameLifeHold = myGameArea.gameLife;
+        currentLevelHold = myGameArea.gameapples;
+
+        myGamePiece.speedX = 0;
+        myGamePiece.speedY = 0;
+        defaultParameters('hitObst');
+        myGameArea.gameLife = gameLifeHold;
+        myGameArea.gameapples = currentLevelHold;
+
+        myGamePiece.image.src = 'res/angryApp.png';
+        myGamePiece.width = 35;
+        myGamePiece.height = 35;
+    }
+    if(event == 'hitApp'){
+        playEatAppleSound();
+        myGameArea.gameapples += 1;
+        gameLifeHold = myGameArea.gameLife;
+        currentLevelHold = myGameArea.gameapples;
+
+        myGamePiece.speedX = 0;
+        myGamePiece.speedY = 0;
+        defaultParameters('hitApp');
+        myGameArea.gameLife = gameLifeHold;
+        myGameArea.gameapples = currentLevelHold;
+
+        changeLevel();
+
+        myGamePiece.image.src = 'res/thumpUp.png';
+        myGamePiece.width = 35;
+        myGamePiece.height = 35;
+
+        if(myGameArea.gameapples%5 == 0){appCollected = myGameArea.gameapples;
+        braceUpCall();}
+    }
+}
+function updateGameArea() { 
+    if (myGamePiece.crashWith(rollBall1) || myGamePiece.crashWith(rollBall2) || myGamePiece.crashWith(rollBall3) || myGamePiece.crashWith(rollBall4) ) {
+        gamePieceCrash('hitObst');
+        //return;
+    }
+    if (myGamePiece.hitApple(apple)){
+        gamePieceCrash('hitApp');
+        //return;
+    }
+
+    myGameArea.clear();
+    myBackground.speedX = -1;
+    myBackground.newPos();
+    myBackground.update();
+
+  if(gameLifeHold == 0){gameOverDisplay.text ='GAMEOVER!!!'; gameOverDisplay.update(); playBackgroundSound('off'); gameIsOne = false;
+        //$('#startBtn').text('Restart Game');
+        $('#startBtn').css('background-color', 'rgba(0,255,0, 0.8)');
+        $('#startBtn').css('display', 'block');
+        $('#stopMyGame').css('display', 'none');
+    }
+
+    myScore.text="APPLES: " + myGameArea.gameapples;
+    myGameLife.text="LIFE: " + myGameArea.gameLife;
+    myScore.update();
+    myGameLife.update();
+
+    myGamePiece.update();
+    rollBall1.update();
+    rollBall2.update();
+    rollBall3.update();
+    rollBall4.update();
+    apple.update();
+    
+    rollBall1.newPos();
+    rollBall2.newPos();
+    rollBall3.newPos();
+    rollBall4.newPos();
+    myGamePiece.newPos();
+    apple.newPos();
+
+    //if(myGamePiece.x == 10){myGamePiece.image.src = 'eatApp.png';}else{myGamePiece.image.src = 'goApp.png';}
+}
+/*$(function(){
+    $('#sCDiv1').click(function(){
+    });
+});*/
+var bbSpd;
+function bobySpeedSet(cntl){
+    var currentSpeed = $('#sCDiv2').text();
+    currentSpeed = parseInt(currentSpeed);
+    cntl = parseInt(cntl);
+    var result = currentSpeed+cntl;
+    if(result >= 10){result = 10}
+    if(result <= 0){result = 0}
+    $('#sCDiv2').text(result);
+}
+function move(dir) {
+    myGamePiece.image.src = 'res/getApp.png';
+    myGamePiece.width = 15;
+    myGamePiece.height = 15;
+
+    bbSpd = parseInt($('#sCDiv2').text());
+    if(dir == 'up') {myGamePiece.speedY = -bbSpd;} 
+    if(dir == 'down') {myGamePiece.speedY = bbSpd;} 
+    if(dir == 'left') {myGamePiece.speedX = -bbSpd;} 
+    if(dir == 'right') {myGamePiece.speedX = bbSpd;} 
+}
+function clearmove() {
+    myGamePiece.speedX = 0; 
+    myGamePiece.speedY = 0; 
+}
+$(function(){
+    $('#startBtn').click(function(){
+        gameLifeHold = 5;
+        defaultR1 = 0.1; defaultR2 = 0.2; defaultR3 = 0.05; defaultR4 = 0.15;
+        rollBallS1 = defaultR1; rollBallS2 = defaultR2; rollBallS3 = defaultR3; 
+        rollBallS4 = defaultR4;
+        bounceCntl1 = defaultR1; bounceCntl2 = defaultR2; bounceCntl3 = defaultR3; bounceCntl4 = defaultR4;  
+
+        applePos = applePosMin;
+        obHght = 20;
+
+        //rollBall1.gravitySpeed = 0;
+        myGameArea.stop();
+        myGameArea.start();
+        updateGameArea();
+        gameIsOne = true;
+        $('#slider-1').val(1);
+        //$('#startBtn').text('Restart Game');
+        $('#startBtn').css('display', 'none');
+        $('#stopMyGame').css('display', 'block');
+        $('#stopMyGame').css('background-color', 'coral');
+
+        $('#bobyDiv').css('visibility', 'hidden');
+        $('#bobySpeedConDiv').css('display', 'block');
+        
+    }); 
+});
+
+
+var goodJob, goodJob1, goodJob2, goodJob3;
+function braceUpCall(){
+    goodJob1 = 'You are doing great!. Continue to collect the apples.'; 
+    goodJob2 =  'You are doing well. You can do better'; 
+    goodJob3 = 'Wonderful!!!. Collect all the apples';
+
+    if(goodJob == goodJob1){goodJob = goodJob2}
+    else if (goodJob == goodJob2){goodJob = goodJob3}
+    else if (goodJob == goodJob3){goodJob = goodJob1}
+    else {goodJob = goodJob1};
+    $('#bobyImg').attr('src', 'res/sweetApp.png');
+    $('#bobySpan1').text(appCollected+' apples collected .');
+    $('#bobySpan1').css('color', 'red');
+    $('#bobySpan2').text(goodJob);
+    $('#bobySpan3').text('SWEET APPLES!!!');
+    $('#bobyDiv').css('visibility', 'visible');
+    setTimeout(braceUpCallExit, 5000);
+}
+function braceUpCallExit(){
+    $('#bobyDiv').css('visibility', 'hidden');
+    $('#bobySpan1').text('Carefully navigate Little Boby through the obstacles to collect the apples');
+    $('#bobySpan1').css('color', 'black');
+    $('#bobySpan2').text("Use the buttons below to set Little Boby's speed");
+     $('#bobySpan3').text('GOOD LUCK!!!');
+    $('#bobyImg').attr('src', 'res/eatApp.png');
+}
+
+function defaultParameters(event){
+    if(gameLifeHold == 0){updateGameArea();gameOverFunction();
+    }else{    
+        myGameArea.stop();
+        if(event == 'hitApp'){
+            defaultR1 = parseFloat(defaultR1);
+            defaultR2 = parseFloat(defaultR2);
+            defaultR3 = parseFloat(defaultR3);
+            defaultR4 = parseFloat(defaultR4);
+            defaultR1 += 0.1;
+            defaultR2 += 0.2;
+            defaultR3 += 0.02;
+            defaultR4 += 0.15;
+
+            obHght = parseFloat(obHght);
+            obHght += 5;
+
+        }
+        rollBallS1 = defaultR1;
+        rollBallS2 = defaultR2;
+        rollBallS3 = defaultR3;
+        rollBallS4 = defaultR4;
+        bounceCntl1 = defaultR1; bounceCntl2 = defaultR2; bounceCntl3 = defaultR3; bounceCntl4 = defaultR4; 
+
+        applePos = randomNumbers(applePosMin, applePosMax, 30);
+        myGameArea.start();
+        updateGameArea();
+    }
+}
+function changeLevel(){
+
+}
+function gameOverFunction(){
+   myGameArea.stop();
+}
+
+function speedCheck1(){
+    var b1GSpd = rollBall1.gravSpd;
+    var b1GtySpd = rollBall1.gravitySpeed;
+    var bounceCntl11 = rollBall1.bounceCntl1;
+    alert('Ball1- gravSpd: '+b1GSpd+'; bounceCntl11: '+bounceCntl1);
+}
+function setMyCanvasAttr(){
+    $('#myCanvas').attr('width', 300);
+    $('#myCanvas').attr('height', 300);
+}
+
+function stopMyGame(){
+    myGameArea.stop();
+    playBackgroundSound('off');
+    gameIsOne = false;
+    $('#startBtn').css('display', 'block');
+    $('#startBtn').css('background-color', 'rgba(0,255,0, 0.8)');
+    $('#stopMyGame').css('display', 'none');
+    myBackground.update();
+    $('#bobySpeedConDiv').css('display', 'none');
+    $('#bobyDiv').css('visibility', 'visible');
+}
+</script>
+
+</body>
+</html>

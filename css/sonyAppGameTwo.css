@@ -1,0 +1,106 @@
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+    border: 2px solid blue;
+}
+#myCanvasDemo2 {
+    width: 480px;
+    height: 270px;
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+    border: 2px solid blue;
+}
+#testDiv{display: flex;}
+#testDiv > input{width: 90px;}
+#screenContG2{align-items: center; display: flex; justify-content: center;}
+#contlBtns{align-items: center; display: flex; justify-content: center}
+#contlBtns	> button {font-size: 12px; font-weight: bolder; padding: 2px; height: 35px;}
+
+#keyContPryg2{align-items: center; display: flex; justify-content: center;}
+#keyContg2{
+	display: grid;
+	grid-template-columns: 33% 33% 33%;
+	//grid-gap: 2px;
+	//background-color: silver;
+	padding: 5px;
+	font-size: 14px;
+	width: 60%;
+	height: auto;
+}
+#key0g2{background-color: red; height: 80px; width: 80px; padding: 20px; margin-right: 10px;
+text-align: center; line-height: 80px; color: white; border: 4px outset gray; border-radius: 10px;
+font-size: 20px}
+#key1g2,#key2g2,#key3g2,#key4g2,#key5g2,#key6g2,#key7g2,#key8g2,#key9g2 {
+	padding: 1px;
+	grid-row-gap: 1px;
+	//padding-bottom: 10px;
+	text-shadow: none;
+	height: 40px;
+}
+/*#key0g2: active{border-color: white}*/
+
+#key2g2, #key4g2, #key6g2, #key8g2 {background-color: aqua; text-align: center; vertical-align: middle;}
+
+#headerBarPg2, #pg2HeaderBarLeftBtn, #footerBarPg2, #headerTitleHomePg2, #footerBarHomePg2, #pg2HeaderBarRightBtn{background-color: teal; color: white; text-shadow: none;}
+#game2Icon{
+    height: 20%;
+    width: 20%;
+    margin-left: 7px;
+    margin-right: 7px;
+    border-radius: 10px;
+    vertical-align: sub;
+}
+#game2BtnsCont{background-color: aqua; display: flex; align-items: center; justify-content: left;
+				color: black; font-weight: bolder; box-shadow: 5px 5px gray; border: 2px solid white; border-radius: 10px;
+				margin-top:0;}
+#game2IconPlay11{width: 0; height: 0; border-top: 25px solid transparent; 
+			border-left:  50px solid dodgerblue; border-bottom: 25px solid transparent;
+				background-color: transparent;}
+#shoot{background-color: red}
+
+
+
+#myConfirmationContPryG2{display: flex; align-items: center; justify-content: center; padding: 10px;
+					position: fixed; width: 90%; top: 100px;}
+#myConfirmationContSubG2{background-color: khaki; width: 50%; height: auto; text-align: center; border: 2px solid white; border-radius: 10px; padding: 5px;
+						box-shadow: 4px 4px gray}
+#myConfirmationBtnsG2{display: flex; align-items: center; justify-content: center; color: black; font-weight: bolder; text-shadow: none;}
+#myConfirmationBtnsG2 > div{padding: 3px; border: 2px solid gray; border-radius: 10px; margin: 2px 10px 2px 10px; background-color: aqua; width: 55px;}
+#myConfirmationYBtnG2{}
+#myConfirmationNBtnG2{}
+
+#bobyGame1G2{text-align: center;}
+#bobyDivG2, #img1ContG2{display: flex; align-items: center; justify-content: center;}
+#boby1G2{width: 70%; height: auto; position: fixed;top: 80px;
+		text-align: center; font-weight: bolder;}
+#bobyImgG2{width: 30%; display: block; margin-left: auto; margin-right: auto;}
+
+
+#gameOverCont_2{display: flex; align-items: center; justify-content: center;}
+#gameOver_2{width: 50%; height: auto; position: fixed;top: 120px;
+		text-align: center; font-weight: bolder;}
+#gameOverSp1_2{font-size: 30px; color: red; font-weight: bolder; animation: dim 0.5s infinite alternate;}
+@keyframes dim{
+	 0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+#gameOverSp2Cont, #gameOverSp3Cont{color: white; text-shadow: none; font-size: 18px;}
+#testDiv2{display: flex;}
+#testDiv2 > div{padding-right: 20px; background-color: navy; color: white; text-shadow: none;}
+#game2StartBtn{background-color: rgba(0,255,0, 0.8)}
+#game2StopBtn{background-color: coral}
+#game2RestartBtn{background-color: dodgerblue;}
+
+#game1IconText1Cont, #game2IconText2Cont{ min-height: 5em; padding-left: 10px;
+ 				display: flex; justify-content: center; align-items: center;}
+#game1IconText1, #game2IconPlay{text-decoration: none; color: black; padding-top: 10px; padding-bottom: 10px;}
+
+
+@media only screen and (max-width: 350px){		/*---For Small Screen. Maximum width of 350px-- */
+	#key2g2,#key4g2,#key6g2,#key8g2 {transform: scale(1.2); width: 150%;}
+	#keyContPryg2{transform: scale(0.7);}
+}

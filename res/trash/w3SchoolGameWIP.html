@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<head>
+        <title>w3SchoolGameWIP</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/jquery.mobile-1.4.5.css">
+        <link rel="stylesheet" type="text/css" href="css/sonyAppWIP.css">
+        <script src="js/jquery.js"></script>
+        <script type="text/javascript" src="js/sonyAppWIP.js"></script>
+        <script type="text/javascript">
+            $(document).on('mobileinit', function(){
+                $.mobile.defaultPageTransition = 'slidefade';
+            });
+        </script>
+        <script src="js/jquery.mobile-1.4.5.js"></script>
+        <script type="text/javascript" src="w3SchoolGameWIPJS.js"></script>
+</head>
+<!--<body onload="startGame1()">-->
+<body>
+
+<div data-role="page" id="page2_1">
+    <div data-role="header">
+        <h1>Sub-Gallery</h1><a data-direction="reverse" href="#page2" class="ui-btn"><<</a>
+    </div><!-- /header -->
+
+    <div role="main" class="ui-content">
+        <p id="test1">Game Screen</p>
+        <div id="screenCont" style="background-color: coral;"> 
+            <div id="myCanvasDemo"></div>
+            <div id="myCanvasDiv"></div>
+        </div>
+        <hr>
+        <div id="contlBtns">
+            <button  onclick="playGame()">Start Game</button>
+            <button  onmousedown="increaseComp()" onmouseup="clearheight()">+Comp</button><button  onmousedown="decreaseComp()" onmouseup="clearheight()">-Comp</button>
+            <button  onclick="gamePiecePos()">GamePiecePos</button>
+            <button  onclick="pulseGame()">PulseGame</button>
+            <button  onclick="restartGame()">ReStartGame</button>
+        </div>
+        <br>
+        <hr>
+        <div id="keyContPry">
+            <div id="keyCont">
+                <div id="key1"></div>
+                <button id="key2" onmousedown="move('up')" onmouseup="clearmove()" ontouchstart="move('up')">UP</button>
+                <div id="key3"></div>
+                <button id="key4" onmousedown="move('left')" onmouseup="clearmove()" ontouchstart="move('left')">LEFT</button>
+                <div id="key5"></div>
+                <button id="key6" onmousedown="move('right')" onmouseup="clearmove()" ontouchstart="move('right')">RIGHT</button>
+                <div id="key7"></div>
+                <button id="key8" onmousedown="move('down')" onmouseup="clearmove()" ontouchstart="move('down')">DOWN</button>
+                <div id="key9"></div>
+            </div>
+        </div>
+        <!--
+        <div style="text-align:center;width:480px;">
+            <button onmousedown="move('up')" onmouseup="clearmove()" ontouchstart="move('up')">UP</button>
+            <button onmousedown="move('left')" onmouseup="clearmove()" ontouchstart="move('left')">LEFT</button>
+            <button onmousedown="move('right')" onmouseup="clearmove()" ontouchstart="move('right')">RIGHT</button>
+            <button onmousedown="move('down')" onmouseup="clearmove()" ontouchstart="move('down')">DOWN</button>
+        </div>
+        <br>
+        <button  onclick="playGame()">Start Game</button><br>
+        <button  onmousedown="increaseComp()" onmouseup="clearheight()">+Comp</button><button  onmousedown="decreaseComp()" onmouseup="clearheight()">-Comp</button><br>
+        <button  onclick="gamePiecePos()">GamePiecePos</button><br>
+        <button  onclick="pulseGame()">PulseGame</button><br>
+        <button  onclick="clearGame()">ReStartGame</button><br>
+        -->
+
+    </div><!-- /content -->
+    <div data-role="footer" data-position="fixed">
+        <h4>Page Footer</h4>
+    </div><!-- /footer -->
+</div><!-- /page -->
+
+<style>
+
+</style>
+<!--
+<div id="myCanvasDiv" style="display: block">
+    <canvas id="myCanvas"></canvas>
+    <canvas id="myCanvas" width ='480' height = '270' style="border: 2px solid blue"></canvas>
+</div>
+
+<br>
+<hr>
+<br>
+ <button  onclick="playGame()">Start Game</button><br>
+ <button  onmousedown="increaseComp()" onmouseup="clearheight()">+Comp</button><button  onmousedown="decreaseComp()" onmouseup="clearheight()">-Comp</button><br>
+<button  onclick="gamePiecePos()">GamePiecePos</button><br>
+<button  onclick="pulseGame()">PulseGame</button><br>
+<button  onclick="clearGame()">ReStartGame</button><br>
+-->
+
+<!--
+<div style="text-align:center;width:480px;">
+  <button onmousedown="move('up')" onmouseup="clearmove()" ontouchstart="moveup()">UP</button><br><br>
+  <button onmousedown="move('left')" onmouseup="clearmove()" ontouchstart="moveleft()">LEFT</button>
+  <button onmousedown="move('right')" onmouseup="clearmove()" ontouchstart="moveright()">RIGHT</button><br><br>
+  <button onmousedown="move('down')" onmouseup="clearmove()" ontouchstart="movedown()">DOWN</button>
+</div>
+
+<div style="text-align:center;width:480px;">
+  <button onmousedown="move('up')" onmouseup="clearmove()" ontouchstart="move('up')">UP</button><br><br>
+  <button onmousedown="move('left')" onmouseup="clearmove()" ontouchstart="move('left')">LEFT</button>
+  <button onmousedown="move('right')" onmouseup="clearmove()" ontouchstart="move('right')">RIGHT</button><br><br>
+  <button onmousedown="move('down')" onmouseup="clearmove()" ontouchstart="move('down')">DOWN</button>
+</div>
+-->
+
+<script>
+/*
+var myGamePiece;
+var myObstacles = [];
+var myScore;
+var gameOver;
+var comWidth = 30;
+var comHeight = 30;
+var myBackground;
+
+function startGame() {
+    gameOver = new component(30, "Consolas", "red", 120, 135, "text");
+    //myGamePiece = new component(comWidth, comHeight, "red", 10, 120);
+    myGamePiece = new component(comWidth, comHeight, "down.jpg", 10, 120, 'image');
+    myScore = new component("30px", "Consolas", "black", 280, 40, "text");
+    myBackground = new component(656, 270, 'bground.jpg', 0, 0, 'background');
+    myGameArea.start();
+}
+
+//var myCanvas = document.getElementById('myCanvas');
+var myGameArea = {
+    canvas : document.createElement("canvas"),
+    //canvas: myCanvas,
+    start : function() {
+        this.canvas.width = 480;
+        this.canvas.height = 270;
+        this.context = this.canvas.getContext("2d");
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+        //this.pulseInterval = setInterval(updateGameArea, 0);
+        },
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    },
+    stop : function() {
+        clearInterval(this.interval);
+    }
+}
+
+function component(width, height, color, x, y, type) {
+    this.type = type;
+    if (type == 'image' || type == 'background'){
+        this.image = new Image();
+        this.image.src = color;
+    }
+    this.width = width;
+    this.height = height;
+    this.speedX = 0;
+    this.speedY = 0;
+    //New
+    this.changeHgt = 0;
+    this.x = x;
+    this.y = y;    
+    this.update = function() {
+        ctx = myGameArea.context;
+        if (this.type == "text") {
+            ctx.font = this.width + " " + this.height;
+            ctx.fillStyle = color;
+            ctx.fillText(this.text, this.x, this.y);}
+        if(type == 'image' || type == 'background'){
+            ctx.drawImage(this.image,
+                this.x,
+                this.y,
+                this.width, this.height);
+        if(type == 'background'){
+            ctx.drawImage(this.image,
+                this.x + this.width,
+                this.y,
+                this.width, this.height);
+        }
+        } else {
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+    }
+    this.newPos = function() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        //----Addition2------/
+        this.hitBottom();
+        this.hitTop();
+        this.hitLeft();
+        /if(this.type == 'background'){if(this.x == -(this.width )){this.x = 0}}  
+        if(this.type == 'background'){if(this.x == -(this.width )){this.x = 0}} 
+        //----Addition2------/
+        if(this.type == 'background'){if(this.x == -(this.width )){this.x = 0}}        
+    }
+    this.newPieceHeight = function() {
+        this.height += this.changeHgt;       
+    }
+    this.crashWith = function(otherobj) {
+        var myleft = this.x;
+        var myright = this.x + (this.width);
+        var mytop = this.y;
+        var mybottom = this.y + (this.height);
+        var otherleft = otherobj.x;
+        var otherright = otherobj.x + (otherobj.width);
+        var othertop = otherobj.y;
+        var otherbottom = otherobj.y + (otherobj.height);
+        var crash = true;
+        if ((mybottom < othertop) || (mytop > otherbottom) || (myright < otherleft) || (myleft > otherright)) {
+            crash = false;
+        }
+        return crash;
+    }
+    //----Addition1------
+    this.hitBottom = function(){
+        var rockbottom = myGameArea.canvas.height - this.height;
+        if (this.y > rockbottom){this.y = rockbottom}
+    }
+    this.hitTop = function(){
+        var rocktop = 0;
+        if (this.y < rocktop){this.y = rocktop}
+    }
+    this.hitLeft = function(){
+        if (type == 'image'){
+            var rockleft = 0;
+            if (this.x < rockleft){myGamePiece.speedX = 0;}
+        }
+    } //----/Addition1-------
+}
+
+function updateGameArea() {
+    var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+    for (i = 0; i < myObstacles.length; i += 1) {
+        if (myGamePiece.crashWith(myObstacles[i])) {
+            myGameArea.stop();
+            //alert('GAME OVER!!!');
+            gameOver.text="GAME OVER!!!";
+            gameOver.update();
+            return;
+        } 
+    }
+    myGameArea.clear();
+    myBackground.speedX = -1;
+    myBackground.newPos();
+    myBackground.update();
+    myGameArea.frameNo += 1;
+    if (myGameArea.frameNo == 1 || everyinterval(150)) {
+        x = myGameArea.canvas.width;
+        minHeight = 20;
+        maxHeight = 200;
+        height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
+        minGap = 50;
+        maxGap = 200;
+        gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
+        myObstacles.push(new component(10, height, "coral", x, 0));
+        myObstacles.push(new component(10, x - height - gap, "red", x, height + gap));
+    }
+    if (myGameArea.frameNo == 1 || everyinterval(150)) {
+        x = myGameArea.canvas.width;
+        minHeight = 20;
+        maxHeight = 200;
+        height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
+        minGap = 50;
+        maxGap = 200;
+        gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
+        myObstacles.push(new component(70, 50, "coral", x, height-gap));
+        //myObstacles.push(new component(10, x - height - gap, "coral", x, 0)); //New
+        myObstacles.push(new component(70, 50, "red", x, height + gap));
+    }
+    for (i = 0; i < myObstacles.length; i += 1) {
+        myObstacles[i].speedX = -1;
+        myObstacles[i].newPos();
+        myObstacles[i].update();
+    }
+    myScore.text="SCORE: " + myGameArea.frameNo;
+   
+    myScore.update();
+    myGamePiece.newPos(); 
+    myGamePiece.newPieceHeight();    
+    myGamePiece.update();
+}
+
+function everyinterval(n) {
+    if ((myGameArea.frameNo / n) % 1 == 0) {return true;}
+    return false;
+}
+
+function move(dir) {
+    myGamePiece.image.src = 'jump.jpg';
+    if(dir == 'up') {myGamePiece.speedY = -1;} 
+    if(dir == 'down') {myGamePiece.speedY = 1;} 
+    if(dir == 'left') {myGamePiece.speedX = -1;} 
+    if(dir == 'right') {myGamePiece.speedX = 1;} 
+}
+
+function clearmove() {
+    myGamePiece.image.src = 'down.jpg';
+    myGamePiece.speedX = 0; 
+    myGamePiece.speedY = 0; 
+}
+
+//New
+function playGame(){
+    document.getElementById('myCanvasDiv').style.display = 'none';
+    startGame()}
+
+function increaseComp(){myGamePiece.changeHgt = +1; }
+function decreaseComp(){myGamePiece.changeHgt = -1; }
+function clearheight() {myGamePiece.changeHgt = 0; }
+*/
+</script>
+<!--<div id="myCanvasDiv" style="display: block">
+    <canvas id="myCanvas" width ='480' height = '270' style="border: 2px solid blue"></canvas>
+</div>
+<br>
+<hr>
+<br>
+ <button  onclick="playGame()">Start Game</button><br>
+ <button  onmousedown="increaseComp()" onmouseup="clearheight()">+Comp</button><button  onmousedown="decreaseComp()" onmouseup="clearheight()">-Comp</button><br>
+<div style="text-align:center;width:480px;">
+  <button onmousedown="move('up')" onmouseup="clearmove()" ontouchstart="moveup()">UP</button><br><br>
+  <button onmousedown="move('left')" onmouseup="clearmove()" ontouchstart="moveleft()">LEFT</button>
+  <button onmousedown="move('right')" onmouseup="clearmove()" ontouchstart="moveright()">RIGHT</button><br><br>
+  <button onmousedown="move('down')" onmouseup="clearmove()" ontouchstart="movedown()">DOWN</button>
+</div>
+-->
+<p>The score will count one point for each frame you manage to "stay alive".</p>
+</body>
+</html>
