@@ -75,7 +75,7 @@
             <input id="getPageInput" type="getPageInput" name="getPageInput" value="startPage1">
         </div>
     </div><!-- /content -->
-    <div class="contact-Section">
+    <div  div data-role="footer" data-position="fixed" class="contact-Section">
       <p id="contacts1ProService">For professional advice  and further enquiries:</p>
             <div id="contacts1">
               <ul id="contacts1UL">
@@ -241,11 +241,12 @@
         </form>
         <hr>
         <div id="contlBtns">
-            <button id="game2StartBtn"  onclick="playGame_2()">Start Game</button>
+            <button id="game2StartBtn"  onclick="playGame_2()" style="display: block;">Start Game</button>
             <!--<button  onmousedown="increaseComp()" onmouseup="clearheight()">+Comp</button><button  onmousedown="decreaseComp()" onmouseup="clearheight()">-Comp</button>
             <button  onclick="gamePiecePos()">GamePiecePos</button>-->
-            <button id="game2StopBtn" onclick="stopMyGame2Call()" style="display: none;">Stop Game</button>
             <button id="game2RestartBtn" onclick="restartGame_2()" style="display: none;">ReStart Game</button>
+            <button id="game2StopBtn" onclick="stopMyGame2Call()" style="display: none;">Stop Game</button>
+            
         </div>
         <hr>
         <div id="keyContPryg2">

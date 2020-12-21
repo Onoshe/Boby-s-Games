@@ -118,7 +118,7 @@ var myGameArea_2 = {
         //document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         screenContG2.appendChild(this.canvas);
         this.frameNo = 0;
-        this.gameLife = 2;
+        this.gameLife = 5;
         this.obstSpeed = 1;
         this.lostCountNo = 0;
         this.killedCount = 0;
@@ -557,7 +557,7 @@ function playGame_2(){
 }
 function gameEnd_2(){
     $('#game2StopBtn').css('display', 'none');
-    $('#game2RestartBtn').css('display', 'none');
+    //$('#game2RestartBtn').css('display', 'none');
     $('#game2RestartBtn').css('display', 'block');
 
     $('#gameOverSp2_2').text(myGameArea_2.frameNo);
@@ -592,14 +592,13 @@ function stopGame2(){
 }
 
 function restartGame_2(){
-    $('#game2StopBtn').css('display', 'block');
+    /*$('#myCanvasDemo2').css('display', 'none');
     $('#game2RestartBtn').css('display', 'none');
     $('#gameOverCont_2').css('display', 'none');
     $('#bobyDivG2').css('display', 'none');
-    $('#pg2HeaderBarRightBtn').css('display', 'none');
+    $('#pg2HeaderBarRightBtn').css('display', 'none');*/
 
     $('#screenContG2 > canvas').css('display', 'flex');
-    $('#myCanvasDemo2').css('display', 'none');
     obFrameCount = 0;
     obID = 0;
     myObstacles_2 = [];
@@ -612,9 +611,15 @@ function restartGame_2(){
     updateGameArea_2();
     startGame_2(); playBackgroundSound_2('on');
     
-    //bgroundSound.currentTime = 0;
+    //bgroundSoundG2.currentTime = 0;
     //playBackgroundSound_2('on');
     activePageCheckStart(); //Call activePage check function
+    $('#myCanvasDemo2').css('display', 'none');
+    $('#bobyDivG2').css('display', 'none');
+    $('#gameOverCont_2').css('display', 'none');
+    $('#pg2HeaderBarRightBtn').css('display', 'none');
+    $('#game2RestartBtn').css('display', 'none');
+    $('#game2StopBtn').css('display', 'block');
 }
 
 $(function(){
@@ -735,7 +740,7 @@ function shootFun(){
     $('#key0g2').css('border-color', 'white');
 }
 //----Game Sounds
-var bBgroundSoundSrc = 'res/baloonGameBgrdSound.mp3';
+//var bBgroundSoundSrc = 'res/baloonGameBgrdSound.mp3';
 var bBurstSoundSrc = 'res/baloonBurst.mp3';
 var bScratchSoundSrc = 'res/baloonScratch.mp3';
 var bgameOver_2SoundSrc = 'res/gameOver_2Chariots.mp3';
@@ -743,7 +748,7 @@ var bGameWonSrc = 'res/baloonGameWon.mp3';
 var gunShotSrc = 'res/gunShot1.mp3';
 var virusKillSrc = 'res/virusKillSound.mp3';
 
-var bBgroundSound = new Audio(bBgroundSoundSrc);
+//var bBgroundSound = new Audio(bBgroundSoundSrc);
 var bBurstSound = new Audio(bBurstSoundSrc);
 var bScratchSound = new Audio(bScratchSoundSrc);
 var bgameOver_2Sound = new Audio(bgameOver_2SoundSrc);
@@ -751,25 +756,25 @@ var bGameWonSound = new Audio(bGameWonSrc);
 var gunShotSound = new Audio(gunShotSrc);
 var virusKillSound = new Audio(virusKillSrc);
 
-var bgroundSoundSrc = 'res/gameBgrdSound3.mp3';
+var bgroundSoundSrcG2 = 'res/gameBgrdSound3.mp3';
 var correctSoundSrc = 'res/gameSoundCorrect.mp3';
 var wrongSoundSrc = 'res/gameSoundWrong.mp3';
-var bgroundSound = new Audio(bgroundSoundSrc); //Creating a music object
+var bgroundSoundG2 = new Audio(bgroundSoundSrcG2); //Creating a music object
 var correctSound = new Audio(correctSoundSrc);
 var wrongSound = new Audio(wrongSoundSrc);
 
 function playBackgroundSound_2(event){
     bgroundSound.pause();
     if(event == 'on'){
-        bgroundSound.currentTime = 0;
-        bgroundSound.play();
-        bgroundSound.loop = true;    
+        bgroundSoundG2.currentTime = 0;
+        bgroundSoundG2.play();
+        bgroundSoundG2.loop = true;    
     }
     if(event == 'off'){
-        bgroundSound.pause();
-        bgroundSound.currentTime = 0;
+        bgroundSoundG2.pause();
+        bgroundSoundG2.currentTime = 0;
     }
-    //bgroundSound = new Audio(bgroundSoundSrc);
+    //bgroundSoundG2 = new Audio(bgroundSoundSrcG2);
 }
 
 function playEatAppleSound_2(){
